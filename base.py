@@ -1,3 +1,5 @@
+from copy import copy
+
 class Pixel:
     numbit = 8
     def __init__(self, *args, **kwargs):
@@ -7,6 +9,8 @@ class Pixel:
         if kwargs.get('number'):
             number = kwargs.get('number')
             self.bits = self.tobinary(number)
+        if len(args) > 0:
+            self.bits = self.tobinary(args[0])
     def tobinary(self, number):
         num = bin(number).split('b')[1]
         while (len(num) < 8):
@@ -59,8 +63,17 @@ class ECA42attractores:
             if Pixel.isinlist(p, attractor):
                 return True
         return False
+    def __isrecursive(self, att):
+        data = Pixel(number=179)
+        tmp = copy(data)
+        for stat in att:
+            tmp.bits = Pixel.xor(tmp, stat)
+        if data.tonumber() == tmp.tonumber():
+            return True
+        else:
+            return False
     def create(self):
-        for i in range(0, 2 ** Pixel.numbit - 1):
+        for i in range(1, 2 ** Pixel.numbit - 2):
             p = Pixel(number=i)
             if self.__isinAttces(p):
                 pass
@@ -72,7 +85,8 @@ class ECA42attractores:
                     p = gene.nextstat()
                 index = Pixel.indexinlist(p, tmpstates)
                 if not self.__isinAttces(p):
-                    self.attractores.append(tmpstates[index:])
+                    if self.__isrecursive(tmpstates[index:]):
+                        self.attractores.append(tmpstates[index:])
 
 
 class ECARule42:
