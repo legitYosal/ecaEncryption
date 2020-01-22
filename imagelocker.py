@@ -1,4 +1,5 @@
 from random import seed, randint
+from copy import copy
 
 class Pixel:
     numbit = 8
@@ -33,6 +34,8 @@ class Pixel:
         return tmp
     @staticmethod
     def isequal(a, b):
+        if a.tonumber == 6:
+            print(a)
         if a.bits == b.bits:
             return True
         else:
@@ -41,7 +44,7 @@ class Pixel:
     def isinlist(p, lst):
         for pixel in lst:
             if Pixel.isequal(p, pixel):
-                return lst.index(pixel)
+                return True
         return False
     @staticmethod
     def indexinlist(p, lst):
@@ -54,29 +57,25 @@ class ECA42attractores:
     def __init__(self):
         self.attractores = []
         self.create()
-
     def __isinAttces(self, p):
         for attractor in self.attractores:
             if Pixel.isinlist(p, attractor):
                 return True
         return False
-
     def create(self):
         for i in range(0, 2 ** Pixel.numbit - 1):
-            p = Pixel(i)
-            if __isinAttces(p):
+            p = Pixel(number=i)
+            if self.__isinAttces(p):
                 pass
             else:
                 tmpstates = []
                 gene = ECARule42(p)
-                while(not Pixel.isinlist(p, tmpstates))
+                while(not Pixel.isinlist(p, tmpstates)):
                     tmpstates.append(p)
                     p = gene.nextstat()
                 index = Pixel.indexinlist(p, tmpstates)
-                print('p it self index in tem is likly nULL: ', tmpstates.)
-                self.attractores.append(tmpstates[index:])
-
-
+                if not self.__isinAttces(p):
+                    self.attractores.append(tmpstates[index:])
 
 
 class ECARule42:
@@ -101,12 +100,13 @@ class ECARule42:
         return tmp
 
 def main():
-    a = Pixel(number=5)
-    eca1 = ECARule42(a)
-    tmp = []
-    for i in range(10):
-        print(eca1.current.bits, '   ' , eca1.current.tonumber())
-        eca1.nextstat()
+    att = ECA42attractores()
+    for at in att.attractores:
+        print('-----------------------')
+        print('attractor number : ', att.attractores.index(at))
+        for a in at:
+            print(a.tonumber())
+
 
 
 if __name__ == '__main__':
