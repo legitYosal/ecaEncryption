@@ -88,7 +88,6 @@ class ECA42attractores:
                     if self.__isrecursive(tmpstates[index:]):
                         self.attractores.append(tmpstates[index:])
 
-
 class ECARule42:
     def __init__(self, initpixel):
         self.current = initpixel
